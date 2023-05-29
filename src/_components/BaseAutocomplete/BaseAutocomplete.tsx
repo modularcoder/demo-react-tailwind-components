@@ -1,10 +1,17 @@
 import React, { useRef, useState } from 'react'
 
+type Item = {
+  id: string
+  name: string
+  [key: string]: unknown
+}
+
 type Props = {
-  items: unknown[]
+  items: Item[]
   isLoading?: boolean
   className?: string
   queryItems: (search: string) => void
+  onSelect: (item: unknown) => void
 }
 
 const BaseAutocomplete: React.FC<Props> = ({
@@ -12,19 +19,9 @@ const BaseAutocomplete: React.FC<Props> = ({
   items,
   className,
 }) => {
-  const values = [
-    {
-      id: '1',
-      name: 'One',
-    },
-    {
-      id: '2',
-      name: 'Two',
-    },
-  ]
-
   const refInput = useRef(null)
   const [search, setSearch] = useState('')
+  const itemsVisible = items.slice(0, 10)
 
   const hanldeInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setSearch(e.target.value)
@@ -41,9 +38,9 @@ const BaseAutocomplete: React.FC<Props> = ({
         placeholder="Type to search..."
         onChange={hanldeInputChange}
       />
-      {search && items && (
+      {search && itemsVisible.length > 0 && (
         <div className="absolute top-full shadow-md bg-white rounded-md w-full mt-1">
-          {values.map((item) => (
+          {itemsVisible.map((item) => (
             <div
               key={item.id}
               role="button"
