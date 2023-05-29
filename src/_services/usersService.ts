@@ -8,7 +8,7 @@ let data: UserRes[] = []
 
 ;(async () => {
   const request = await fetch(
-    'https://randomuser.me/api/?results=1000&&orderby=!registered?nat=us,dk,fr,gb?seed=helloworld'
+    'https://randomuser.me/api/?results=1000&&orderby=!registered?nat=us,gb?seed=helloworld'
   )
 
   const result = await request.json()

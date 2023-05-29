@@ -9,8 +9,6 @@ const TheAutocomplete: React.FC = () => {
   const handleQueryItems = debounce(async (search: string) => {
     const users = await usersService.get(search)
 
-    console.log('users', users)
-
     setItems(users)
   })
 
