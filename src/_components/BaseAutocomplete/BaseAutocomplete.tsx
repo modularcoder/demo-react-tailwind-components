@@ -1,5 +1,8 @@
 import React, { useRef, useState } from 'react'
 
+import BaseAutocompleteInput from './BaseAutocompleteInput'
+import BaseAutocompleteItem from './BaseAutocompleteItem'
+
 type Item = {
   id: string
   name: string
@@ -10,18 +13,20 @@ type Props = {
   items: Item[]
   isLoading?: boolean
   className?: string
+  maxItems?: number
   queryItems: (search: string) => void
   onSelect: (item: unknown) => void
 }
 
 const BaseAutocomplete: React.FC<Props> = ({
   queryItems,
+  maxItems = 5,
   items,
   className,
 }) => {
-  const refInput = useRef(null)
+  // const refInput = useRef(null)
   const [search, setSearch] = useState('')
-  const itemsVisible = items.slice(0, 10)
+  const itemsVisible = items.slice(0, maxItems)
 
   const hanldeInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setSearch(e.target.value)
@@ -30,24 +35,11 @@ const BaseAutocomplete: React.FC<Props> = ({
 
   return (
     <div className={`inline-flex relative ${className}`}>
-      <input
-        type="text"
-        className="form-input rounded w-full"
-        value={search}
-        ref={refInput}
-        placeholder="Type to search..."
-        onChange={hanldeInputChange}
-      />
+      <BaseAutocompleteInput value={search} onChange={hanldeInputChange} />
       {search && itemsVisible.length > 0 && (
         <div className="absolute top-full shadow-md bg-white rounded-md w-full mt-1">
           {itemsVisible.map((item) => (
-            <div
-              key={item.id}
-              role="button"
-              className="px-2 py-2 hover:bg-slate-100"
-            >
-              {item.name}
-            </div>
+            <BaseAutocompleteItem key={item.id} name={item.name} />
           ))}
         </div>
       )}
