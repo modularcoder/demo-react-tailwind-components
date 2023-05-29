@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import BaseAutocompleteInput from './BaseAutocompleteInput'
 import BaseAutocompleteItem from './BaseAutocompleteItem'
+import FocusTrap from 'focus-trap-react'
 
 type Item = {
   id: string
@@ -34,16 +35,18 @@ const BaseAutocomplete: React.FC<Props> = ({
   }
 
   return (
-    <div className={`inline-flex relative ${className}`}>
-      <BaseAutocompleteInput value={search} onChange={hanldeInputChange} />
-      {search && itemsVisible.length > 0 && (
-        <div className="absolute top-full shadow-md bg-white rounded-md w-full mt-1">
-          {itemsVisible.map((item) => (
-            <BaseAutocompleteItem key={item.id} name={item.name} />
-          ))}
-        </div>
-      )}
-    </div>
+    <FocusTrap>
+      <div className={`inline-flex relative ${className}`}>
+        <BaseAutocompleteInput value={search} onChange={hanldeInputChange} />
+        {search && itemsVisible.length > 0 && (
+          <div className="absolute top-full shadow-md bg-white rounded-md w-full mt-1">
+            {itemsVisible.map((item) => (
+              <BaseAutocompleteItem key={item.id} name={item.name} />
+            ))}
+          </div>
+        )}
+      </div>
+    </FocusTrap>
   )
 }
 
